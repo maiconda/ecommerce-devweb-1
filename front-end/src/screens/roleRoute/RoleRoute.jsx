@@ -2,7 +2,7 @@ import {Navigate} from "react-router-dom";
 
 const RoleRoute = ({ allowedRole, children }) => {
 
-    const isLogged = localStorage.getItem('isLogged') === 'true';
+    const isLogged = localStorage.getItem('isLoggedIn') === 'true';
     const userRole = localStorage.getItem('role');
 
     if(!isLogged || allowedRole !== userRole) {
