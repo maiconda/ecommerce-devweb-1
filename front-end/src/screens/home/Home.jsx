@@ -3,9 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-    const [products, setProducts] = useState([]); // Estado para armazenar os produtos
-    const [error, setError] = useState(null); // Estado para lidar com erros
-    const navigate = useNavigate(); // Hook para redirecionar
+    const [products, setProducts] = useState([]);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -20,32 +20,48 @@ const Home = () => {
         fetchProducts();
     }, []);
 
-    // Função para navegar até a página do produto
     const handleViewProduct = (id) => {
-        navigate(`/product/${id}`); // Redireciona para a página do produto pelo ID
+        navigate(`/product/${id}`);
     };
 
     return (
-        <div>
-            <h1>Lista de Produtos</h1>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <ul>
+        <div className="container mt-5">
+            <h1 className="text-center mb-4">Lista de Produtos</h1>
+            {error && <div className="alert alert-danger">{error}</div>}
+            <div className="row">
                 {products.map((product) => (
-                    <li key={product.id}>
-                        <h2>{product.name}</h2>
-                        <p><strong>Preço:</strong> ${product.price}</p>
-                        <p><strong>Descrição:</strong> {product.desciption}</p>
-                        <p>
-                            <strong>Categorias:</strong>{" "}
-                            {product.categories.map((category) => category.name).join(", ")}
-                        </p>
-                        <button onClick={() => handleViewProduct(product.id)}>
-                            Ver Detalhes
-                        </button>
-                        <hr />
-                    </li>
+                    <div className="col-md-4 mb-4" key={product.id}>
+                        <div className="card h-100 shadow-sm">
+                            <img
+                                src={product.imgUrl || "https://via.placeholder.com/150"}
+                                className="card-img-top"
+                                alt={product.name}
+                            />
+                            <div className="card-body">
+                                <h5 className="card-title">{product.name}</h5>
+                                <p className="card-text">
+                                    <strong>Preço:</strong> ${product.price}
+                                </p>
+                                <p className="card-text">
+                                    <strong>Descrição:</strong> {product.desciption}
+                                </p>
+                                <p className="card-text">
+                                    <strong>Categorias:</strong>{" "}
+                                    {product.categories
+                                        .map((category) => category.name)
+                                        .join(", ")}
+                                </p>
+                                <button
+                                    className="btn btn-primary w-100"
+                                    onClick={() => handleViewProduct(product.id)}
+                                >
+                                    Ver Detalhes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

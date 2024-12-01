@@ -14,12 +14,11 @@ const Login = () => {
                 username,
                 password,
             }).then((response) => {
-                console.log(response.data)
-                console.log('deu')
+                console.log(response.data);
                 localStorage.setItem("isLoggedIn", "true");
                 localStorage.setItem("token", response.data.accessToken);
-                localStorage.setItem("user", response.data.user)
-                localStorage.setItem("role", response.data.user.roles[0].name)
+                localStorage.setItem("user", response.data.user);
+                localStorage.setItem("role", response.data.user.roles[0].name);
 
                 if (response.data.user.roles[0].name === "ADMIN") {
                     navigate("/admin");
@@ -36,37 +35,56 @@ const Login = () => {
     };
 
     return (
-        <div style={{ textAlign: "center", marginTop: "50px" }}>
-            <h1>Login</h1>
-            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                style={{ display: "block", margin: "10px auto", padding: "10px", width: "300px" }}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                style={{ display: "block", margin: "10px auto", padding: "10px", width: "300px" }}
-            />
-            <button
-                onClick={handleLogin}
-                style={{
-                    marginTop: "20px",
-                    padding: "10px 20px",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                }}
-            >
-                Login
-            </button>
-            <Link to={'/login/new'}>Criar conta</Link>
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card shadow">
+                        <div className="card-body">
+                            <h1 className="text-center">Login</h1>
+                            {errorMessage && (
+                                <p className="text-danger text-center">{errorMessage}</p>
+                            )}
+                            <div className="mb-3">
+                                <label htmlFor="username" className="form-label">Usuário</label>
+                                <input
+                                    type="text"
+                                    id="username"
+                                    className="form-control"
+                                    placeholder="Digite seu nome de usuário"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="password" className="form-label">Senha</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    className="form-control"
+                                    placeholder="Digite sua senha"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                            <div className="d-grid gap-2">
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={handleLogin}
+                                >
+                                    Entrar
+                                </button>
+                            </div>
+                            <div className="text-center mt-3">
+                                <Link to="/login/new" className="text-decoration-none">
+                                    Criar conta
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
 
-export default Login
+export default Login;

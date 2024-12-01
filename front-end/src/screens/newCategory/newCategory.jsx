@@ -10,25 +10,23 @@ const NewCategory = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    // Atualiza os valores dos campos do formulário
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setCategory({ ...category, [name]: value });
     };
 
-    // Envia os dados da nova categoria
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem("token"); // Obtém o token do localStorage
+        const token = localStorage.getItem("token");
 
         try {
             const response = await axios.post(
-                "http://localhost:8080/categories", // Endpoint para criação de categorias
+                "http://localhost:8080/categories",
                 category,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
@@ -38,7 +36,7 @@ const NewCategory = () => {
             setCategory({
                 name: "",
                 image: "",
-            }); // Reseta o formulário
+            });
         } catch (err) {
             setErrorMessage("Erro ao criar categoria. Verifique os dados ou o servidor.");
             setSuccessMessage("");
@@ -46,33 +44,61 @@ const NewCategory = () => {
     };
 
     return (
-        <div>
-            <h1>Criar Nova Categoria</h1>
-            {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Nome:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={category.name}
-                        onChange={handleInputChange}
-                        required
-                    />
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card shadow">
+                        <div className="card-body">
+                            <h1 className="text-center mb-4">Criar Nova Categoria</h1>
+                            {successMessage && (
+                                <div className="alert alert-success text-center">
+                                    {successMessage}
+                                </div>
+                            )}
+                            {errorMessage && (
+                                <div className="alert alert-danger text-center">
+                                    {errorMessage}
+                                </div>
+                            )}
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-3">
+                                    <label htmlFor="name" className="form-label">
+                                        Nome
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        className="form-control"
+                                        value={category.name}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="image" className="form-label">
+                                        URL da Imagem
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="image"
+                                        name="image"
+                                        className="form-control"
+                                        value={category.image}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="d-grid">
+                                    <button type="submit" className="btn btn-primary">
+                                        Salvar Categoria
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label>Imagem:</label>
-                    <input
-                        type="text"
-                        name="image"
-                        value={category.image}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <button type="submit">Salvar Categoria</button>
-            </form>
+            </div>
         </div>
     );
 };

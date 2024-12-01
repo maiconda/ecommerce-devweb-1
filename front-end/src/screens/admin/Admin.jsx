@@ -9,15 +9,14 @@ const Admin = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = localStorage.getItem("token"); // Obtém o token do localStorage
+            const token = localStorage.getItem("token");
             const headers = { Authorization: `Bearer ${token}` };
 
             try {
-                // Fazendo múltiplas requisições
                 const [usersResponse, productsResponse, categoriesResponse] = await Promise.all([
-                    axios.get("http://localhost:8080/users", { headers }), // Endpoint para usuários
-                    axios.get("http://localhost:8080/products", { headers }), // Endpoint para produtos
-                    axios.get("http://localhost:8080/categories", { headers }), // Endpoint para categorias
+                    axios.get("http://localhost:8080/users", { headers }),
+                    axios.get("http://localhost:8080/products", { headers }),
+                    axios.get("http://localhost:8080/categories", { headers }), 
                 ]);
 
                 setUsers(usersResponse.data);
@@ -32,19 +31,20 @@ const Admin = () => {
     }, []);
 
     return (
-        <div className="admin-dashboard">
-            <h1>Painel do Administrador</h1>
-            {error && <p className="error-message">{error}</p>}
+        <div className="container mt-5">
+            <h1 className="text-center mb-5">Painel do Administrador</h1>
+            {error && <div className="alert alert-danger">{error}</div>}
 
-            <div className="table-container">
+            <div className="mb-5">
                 <h2>Usuários</h2>
-                <table className="data-table">
-                    <thead>
+                <table className="table table-striped table-hover">
+                    <thead className="table-dark">
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
                             <th>Email</th>
                             <th>Telefone</th>
+                            <th>Permissoes</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,22 +54,22 @@ const Admin = () => {
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>{user.phone}</td>
+                                <td>{user.roles[0].name}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
 
-            <div className="table-container">
+            <div className="mb-5">
                 <h2>Produtos</h2>
-                <table className="data-table">
-                    <thead>
+                <table className="table table-striped table-hover">
+                    <thead className="table-dark">
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
                             <th>Preço</th>
                             <th>Descrição</th>
-                            {/* <th>Categorias</th> */}
                             <th>Imagem</th>
                         </tr>
                     </thead>
@@ -80,7 +80,6 @@ const Admin = () => {
                                 <td>{product.name}</td>
                                 <td>{product.price}</td>
                                 <td>{product.desciption}</td>
-                                {/* <td>{product.categories[0].name}</td> */}
                                 <td>{product.imgUrl}</td>
                             </tr>
                         ))}
@@ -88,10 +87,10 @@ const Admin = () => {
                 </table>
             </div>
 
-            <div className="table-container">
+            <div className="mb-5">
                 <h2>Categorias</h2>
-                <table className="data-table">
-                    <thead>
+                <table className="table table-striped table-hover">
+                    <thead className="table-dark">
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
@@ -103,7 +102,7 @@ const Admin = () => {
                             <tr key={category.id}>
                                 <td>{category.id}</td>
                                 <td>{category.name}</td>
-                                <td>{category.image}</td> {/* Mostra a URL da imagem */}
+                                <td>{category.image}</td>
                             </tr>
                         ))}
                     </tbody>

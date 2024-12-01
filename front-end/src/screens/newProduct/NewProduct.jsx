@@ -8,84 +8,122 @@ const NewProduct = () => {
         desciption: "",
         price: "",
         imgUrl: "",
-    }); // Estado inicial para o formulário
+    });
 
-    const [successMessage, setSuccessMessage] = useState(""); // Mensagem de sucesso
-    const [errorMessage, setErrorMessage] = useState(""); // Mensagem de erro
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
-    // Atualiza os valores dos campos do formulário
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setProduct({ ...product, [name]: value });
     };
 
-    // Envia o produto via POST
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Evita o reload da página
-        const token = localStorage.getItem("token"); 
+        e.preventDefault();
+        const token = localStorage.getItem("token");
         try {
-            console.log(token)
-            const response = await axios.post("http://localhost:8080/products", product            ,{
-                headers: {
-                    Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
-                },
-            });
-            setSuccessMessage("Produto criado com sucesso!"); // Define mensagem de sucesso
-            setErrorMessage(""); // Reseta mensagens de erro
-            setProduct({ id: null, name: "", desciption: "", price: "", imgUrl: "" }); // Reseta o formulário
+            const response = await axios.post(
+                "http://localhost:8080/products",
+                product,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            setSuccessMessage("Produto criado com sucesso!");
+            setErrorMessage("");
+            setProduct({ id: null, name: "", desciption: "", price: "", imgUrl: "" }); 
         } catch (err) {
-            setErrorMessage("Erro ao criar produto. Verifique os dados ou o servidor."); // Define mensagem de erro
-            setSuccessMessage(""); // Reseta mensagem de sucesso
+            setErrorMessage("Erro ao criar produto. Verifique os dados ou o servidor."); 
+            setSuccessMessage("");
         }
     };
 
     return (
-        <div>
-            <h1>Criar Novo Produto</h1>
-            {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Nome:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={product.name}
-                        onChange={handleInputChange}
-                        required
-                    />
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card shadow">
+                        <div className="card-body">
+                            <h1 className="text-center mb-4">Criar Novo Produto</h1>
+                            {successMessage && (
+                                <div className="alert alert-success text-center">
+                                    {successMessage}
+                                </div>
+                            )}
+                            {errorMessage && (
+                                <div className="alert alert-danger text-center">
+                                    {errorMessage}
+                                </div>
+                            )}
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-3">
+                                    <label htmlFor="name" className="form-label">
+                                        Nome
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        className="form-control"
+                                        value={product.name}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="desciption" className="form-label">
+                                        Descrição
+                                    </label>
+                                    <textarea
+                                        id="desciption"
+                                        name="desciption"
+                                        className="form-control"
+                                        rows="3"
+                                        value={product.desciption}
+                                        onChange={handleInputChange}
+                                        required
+                                    ></textarea>
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="price" className="form-label">
+                                        Preço
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="price"
+                                        name="price"
+                                        className="form-control"
+                                        value={product.price}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="imgUrl" className="form-label">
+                                        URL da Imagem
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="imgUrl"
+                                        name="imgUrl"
+                                        className="form-control"
+                                        value={product.imgUrl}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="d-grid">
+                                    <button type="submit" className="btn btn-primary">
+                                        Salvar Produto
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label>Descrição:</label>
-                    <textarea
-                        name="desciption"
-                        value={product.desciption}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Preço:</label>
-                    <input
-                        type="number"
-                        name="price"
-                        value={product.price}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>URL da Imagem:</label>
-                    <input
-                        type="text"
-                        name="imgUrl"
-                        value={product.imgUrl}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <button type="submit">Salvar Produto</button>
-            </form>
+            </div>
         </div>
     );
 };
